@@ -13,6 +13,11 @@ Screenshot
 .. image:: screenshot.png
    :alt: screenshot
 
+Requirements
+------------
+
+Python 3 and ``pip install pysvg-py3``.
+
 Resources
 ---------
 

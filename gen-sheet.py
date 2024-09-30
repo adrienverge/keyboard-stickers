@@ -15,15 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-
-from cgi import escape
+from html import escape
 import sys
 
 from pysvg.builders import StyleBuilder
-from pysvg.shape import rect, line
-from pysvg.structure import svg, image
-from pysvg.text import text
+from pysvg.shape import Rect, Line
+from pysvg.structure import Svg, Image
+from pysvg.text import Text
+
+
+assert sys.version_info[0] >= 3
+
 
 if len(sys.argv) != 2:
     print('usage: %s OUTPUT' % sys.argv[0], file=sys.stderr)
@@ -93,78 +95,78 @@ class Key(object):
         self.labels = args
 
     def __repr__(self):
-        return ' '.join([l.string for l in self.labels]).encode('utf-8')
+        return ' '.join([l.string for l in self.labels])
 
 
 KEYS = (
-    #Key(Label(u'Q', 'alphabet')),
-    #Key(Label(u'W', 'alphabet')),
-    #Key(Label(u'E', 'alphabet')),
-    #Key(Label(u'R', 'alphabet')),
-    #Key(Label(u'T', 'alphabet')),
-    #Key(Label(u'Y', 'alphabet')),
-    Key(Label(u'~', 'digitsshift'),
-        Label(u'`', 'digits')),
-    Key(Label(u'!', 'digitsshift'), Label(u'¹', 'altgrshift'),
-        Label(u'1', 'digits'), Label(u'¡', 'altgr')),
-    Key(Label(u'@', 'digitsshift'),
-        Label(u'2', 'digits'), Label(u'²', 'altgr')),
-    Key(Label(u'#', 'digitsshift'),
-        Label(u'3', 'digits'), Label(u'³', 'altgr')),
-    Key(Label(u'$', 'digitsshift'), Label(u'£', 'altgrshift'),
-        Label(u'4', 'digits'), Label(u'¤', 'altgr')),
-    Key(Label(u'%', 'digitsshift'),
-        Label(u'5', 'digits'), Label(u'€', 'altgr')),
-    Key(Label(u'^', 'digitsshift'),
-        Label(u'6', 'digits'), Label(u'¼', 'altgr')),
-    Key(Label(u'&', 'digitsshift'),
-        Label(u'7', 'digits'), Label(u'½', 'altgr'), Label(u'7', 'fnkey')),
-    Key(Label(u'*', 'digitsshift'),
-        Label(u'8', 'digits'), Label(u'¾', 'altgr'), Label(u'8', 'fnkey')),
-    Key(Label(u'(', 'digitsshift'),
-        Label(u'9', 'digits'), Label(u'‘', 'altgr'), Label(u'9', 'fnkey')),
-    Key(Label(u')', 'digitsshift'),
-        Label(u'0', 'digits'), Label(u'’', 'altgr'), Label(u'/', 'fnkey')),
-    Key(Label(u'_', 'digitsshift'),
-        Label(u'-', 'digits'), Label(u'¥', 'altgr')),
-    Key(Label(u'+', 'digitsshift'), Label(u'÷', 'altgrshift'),
-        Label(u'=', 'digits'), Label(u'×', 'altgr')),
-    Key(Label(u'{', 'digitsshift'), Label(u'“', 'altgrshift'),
-        Label(u'[', 'digits'), Label(u'«', 'altgr')),
-    Key(Label(u'}', 'digitsshift'), Label(u'”', 'altgrshift'),
-        Label(u']', 'digits'), Label(u'»', 'altgr')),
-    Key(Label(u':', 'digitsshift'), Label(u'°', 'altgrshift'),
-        Label(u';', 'digits'), Label(u'¶', 'altgr'), Label(u'-', 'fnkey')),
-    Key(Label(u'"', 'digitsshift'), Label(u'¨', 'altgrshift'),
-        Label(u'\'', 'digits'), Label(u'´', 'altgr')),
-    Key(Label(u'|', 'digitsshift'), Label(u'¦', 'altgrshift'),
-        Label(u'\\', 'digits'), Label(u'¬', 'altgr')),
-    Key(Label(u'<', 'digitsshift'), Label(u'Ç', 'altgrshift'),
-        Label(u',', 'digits'), Label(u'ç', 'altgr')),
-    Key(Label(u'>', 'digitsshift'),
-        Label(u'.', 'digits'), Label(u'.', 'fnkey')),
-    Key(Label(u'?', 'digitsshift'),
-        Label(u'/', 'digits'), Label(u'¿', 'altgr'), Label(u'+', 'fnkey')),
-    Key(Label(u'Suppr', 'specialkey')),
-    Key(Label(u'Écran', 'specialkey')),
-    Key(Label(u'Inser', 'specialkey')),
-    Key(Label(u'Alt', 'specialkey')),
-    Key(Label(u'Alt Gr', 'specialkey')),
-    Key(Label(u'Ctrl', 'specialkey')),
-    Key(Label(u'\u2328', 'symbol')),
-    Key(Label(u'\u260E', 'symbolbig')),
-    Key(Label(u'\u2301', 'symbolbig')),
-    Key(Label(u'\u21DE', 'symbol')),
-    Key(Label(u'\u21DF', 'symbol')),
-    Key(Label(u'\u232B', 'symbol')),
-    Key(Label(u'\u21E7', 'symbolbig')),
-    Key(Label(u'\u21F1', 'symbol')),
-    Key(Label(u'\u21F2', 'symbol')),
-    Key(Label(u'\u2190', 'symbol')),
-    Key(Label(u'\u2191', 'symbol')),
-    Key(Label(u'\u2192', 'symbol')),
-    Key(Label(u'\u2193', 'symbol')),
-    Key(Label(u'vim.svg', 'image')),
+    #Key(Label('Q', 'alphabet')),
+    #Key(Label('W', 'alphabet')),
+    #Key(Label('E', 'alphabet')),
+    #Key(Label('R', 'alphabet')),
+    #Key(Label('T', 'alphabet')),
+    #Key(Label('Y', 'alphabet')),
+    Key(Label('~', 'digitsshift'),
+        Label('`', 'digits')),
+    Key(Label('!', 'digitsshift'), Label('¹', 'altgrshift'),
+        Label('1', 'digits'), Label('¡', 'altgr')),
+    Key(Label('@', 'digitsshift'),
+        Label('2', 'digits'), Label('²', 'altgr')),
+    Key(Label('#', 'digitsshift'),
+        Label('3', 'digits'), Label('³', 'altgr')),
+    Key(Label('$', 'digitsshift'), Label('£', 'altgrshift'),
+        Label('4', 'digits'), Label('¤', 'altgr')),
+    Key(Label('%', 'digitsshift'),
+        Label('5', 'digits'), Label('€', 'altgr')),
+    Key(Label('^', 'digitsshift'),
+        Label('6', 'digits'), Label('¼', 'altgr')),
+    Key(Label('&', 'digitsshift'),
+        Label('7', 'digits'), Label('½', 'altgr'), Label('7', 'fnkey')),
+    Key(Label('*', 'digitsshift'),
+        Label('8', 'digits'), Label('¾', 'altgr'), Label('8', 'fnkey')),
+    Key(Label('(', 'digitsshift'),
+        Label('9', 'digits'), Label('‘', 'altgr'), Label('9', 'fnkey')),
+    Key(Label(')', 'digitsshift'),
+        Label('0', 'digits'), Label('’', 'altgr'), Label('/', 'fnkey')),
+    Key(Label('_', 'digitsshift'),
+        Label('-', 'digits'), Label('¥', 'altgr')),
+    Key(Label('+', 'digitsshift'), Label('÷', 'altgrshift'),
+        Label('=', 'digits'), Label('×', 'altgr')),
+    Key(Label('{', 'digitsshift'), Label('“', 'altgrshift'),
+        Label('[', 'digits'), Label('«', 'altgr')),
+    Key(Label('}', 'digitsshift'), Label('”', 'altgrshift'),
+        Label(']', 'digits'), Label('»', 'altgr')),
+    Key(Label(':', 'digitsshift'), Label('°', 'altgrshift'),
+        Label(';', 'digits'), Label('¶', 'altgr'), Label('-', 'fnkey')),
+    Key(Label('"', 'digitsshift'), Label('¨', 'altgrshift'),
+        Label('\'', 'digits'), Label('´', 'altgr')),
+    Key(Label('|', 'digitsshift'), Label('¦', 'altgrshift'),
+        Label('\\', 'digits'), Label('¬', 'altgr')),
+    Key(Label('<', 'digitsshift'), Label('Ç', 'altgrshift'),
+        Label(',', 'digits'), Label('ç', 'altgr')),
+    Key(Label('>', 'digitsshift'),
+        Label('.', 'digits'), Label('.', 'fnkey')),
+    Key(Label('?', 'digitsshift'),
+        Label('/', 'digits'), Label('¿', 'altgr'), Label('+', 'fnkey')),
+    Key(Label('Suppr', 'specialkey')),
+    Key(Label('Écran', 'specialkey')),
+    Key(Label('Inser', 'specialkey')),
+    Key(Label('Alt', 'specialkey')),
+    Key(Label('Alt Gr', 'specialkey')),
+    Key(Label('Ctrl', 'specialkey')),
+    Key(Label('\u2328', 'symbol')),
+    Key(Label('\u260E', 'symbolbig')),
+    Key(Label('\u2301', 'symbolbig')),
+    Key(Label('\u21DE', 'symbol')),
+    Key(Label('\u21DF', 'symbol')),
+    Key(Label('\u232B', 'symbol')),
+    Key(Label('\u21E7', 'symbolbig')),
+    Key(Label('\u21F1', 'symbol')),
+    Key(Label('\u21F2', 'symbol')),
+    Key(Label('\u2190', 'symbol')),
+    Key(Label('\u2191', 'symbol')),
+    Key(Label('\u2192', 'symbol')),
+    Key(Label('\u2193', 'symbol')),
+    Key(Label('vim.svg', 'image')),
     Key(),
 )
 
@@ -173,7 +175,7 @@ class Keyboard(object):
     def __init__(self, inverted=False):
         self.w = 210 * DENSITY
         self.h = 297 * DENSITY
-        self.svg = svg("keyboard", width=self.w, height=self.h)
+        self.svg = Svg("keyboard", width=self.w, height=self.h)
 
         if inverted:
             self.bg = "white"
@@ -184,24 +186,24 @@ class Keyboard(object):
         margin = 1 * DENSITY
         w = 11 * DENSITY
         h = 11 * DENSITY
-        r = rect(x - 0.8 * margin, y - 0.3 * margin,
+        r = Rect(x - 0.8 * margin, y - 0.3 * margin,
                  w + 2 * 0.8 * margin, h + 2 * 0.3 * margin)
         r.set_fill(self.bg)
         self.svg.addElement(r)
 
-        l = line(x, y - 2 * margin, x, y + h + 2 * margin)
+        l = Line(x, y - 2 * margin, x, y + h + 2 * margin)
         l.set_stroke("black")
         l.set_stroke_width(0.3 * DENSITY)
         self.svg.addElement(l)
-        l = line(x + w, y - 2 * margin, x + w, y + h + 2 * margin)
+        l = Line(x + w, y - 2 * margin, x + w, y + h + 2 * margin)
         l.set_stroke("black")
         l.set_stroke_width(0.3 * DENSITY)
         self.svg.addElement(l)
-        l = line(x - 2 * margin, y, x + w + 2 * margin, y)
+        l = Line(x - 2 * margin, y, x + w + 2 * margin, y)
         l.set_stroke("black")
         l.set_stroke_width(0.3 * DENSITY)
         self.svg.addElement(l)
-        l = line(x - 2 * margin, y + h, x + w + 2 * margin, y + h)
+        l = Line(x - 2 * margin, y + h, x + w + 2 * margin, y + h)
         l.set_stroke("black")
         l.set_stroke_width(0.3 * DENSITY)
         self.svg.addElement(l)
@@ -209,12 +211,12 @@ class Keyboard(object):
         for label in reversed(key.labels):
             if label.type != 'image':
                 type = types[label.type]
-                t = text(escape(label.string),
+                t = Text(escape(label.string),
                          x + type.dx * w, y + type.dy * h)
                 t.set_style(type.style.getStyle())
                 self.svg.addElement(t)
             else:
-                i = image(x=x + 0.2 * w, y=y + 0.2 * h,
+                i = Image(x=x + 0.2 * w, y=y + 0.2 * h,
                           width=0.6 * w, height=0.6 * h)
                 i.set_xlink_href(label.string)
                 self.svg.addElement(i)
