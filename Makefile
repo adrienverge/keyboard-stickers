@@ -4,7 +4,7 @@ keyboard-stickers.svg: gen-sheet.py
 	python $^ $@
 
 keyboard-stickers.pdf: keyboard-stickers.svg
-	convert $^ -resize 2480x3507 -units PixelsPerInch -density 300x300 $@
+	magick $^ -resize 2480x3507 -units PixelsPerInch -density 300x300 $@
 
 .PHONY: clean
 clean:
