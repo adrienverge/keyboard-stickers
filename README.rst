@@ -16,7 +16,7 @@ Screenshot
 Requirements
 ------------
 
-Python 3 and ``pip install pysvg-py3``.
+Python 3, ``pip install pysvg-py3`` and ImageMagick.
 
 Resources
 ---------
